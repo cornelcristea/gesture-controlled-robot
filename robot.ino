@@ -1,15 +1,15 @@
-/*
+/* 
+-------------------------------------------------------
+
+Universitatea Tehnica "Gheorghe Asachi" Iasi
+Facultatea de Mecanica (Mecatronica)
 
 PROIECT:
 ROBOT MOBIL CONTROLAT PRIN GESTURI
 
-Student: CRISTEA Petru-Cornel
-Grupa: 8408 Mecatronica
-Indrumator: s.l.univ.dr.ing. STAMATE Ciprian
-Iasi 2020
+Descriere: Program pentru Robot (Rx)
+Student: Petru-Cornel CRISTEA
 
--------------------------------------------------------
-Program Arduino pentru robot
 -------------------------------------------------------
 */
 
