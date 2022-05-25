@@ -1,15 +1,15 @@
-/*
+/* 
+-------------------------------------------------------
+
+Universitatea Tehnica "Gheorghe Asachi" Iasi
+Facultatea de Mecanica (Mecatronica)
 
 PROIECT:
 ROBOT MOBIL CONTROLAT PRIN GESTURI
 
-Student: CRISTEA Petru-Cornel
-Grupa: 8408 Mecatronica
-Indrumator: s.l.univ.dr.ing. STAMATE Ciprian
-Iasi 2020
+Descriere: Program pentru Controler (Tx)
+Student: Petru-Cornel CRISTEA
 
--------------------------------------------------------
-Program Arduino pentru controler
 -------------------------------------------------------
 */
 
@@ -50,8 +50,8 @@ void loop() {
     controler="X1"  ;
     vw_send((uint8_t *)controler, strlen(controler));
     vw_wait_tx(); 
-    Serial.print("X: ");Serial.print(mpu6050.getAngleX());Serial.print("   ");
-    Serial.print("Y: ");Serial.print(mpu6050.getAngleY());Serial.print("   ");
+    //Serial.print("X: ");Serial.print(mpu6050.getAngleX());Serial.print("   ");
+    //Serial.print("Y: ");Serial.print(mpu6050.getAngleY());Serial.print("   ");
     Serial.println("Inapoi");
   } 
   
@@ -59,8 +59,8 @@ void loop() {
     controler = "X2";
     vw_send((uint8_t *)controler, strlen(controler));
     vw_wait_tx(); 
-    Serial.print("X: ");Serial.print(mpu6050.getAngleX());Serial.print("   ");
-    Serial.print("Y: ");Serial.print(mpu6050.getAngleY());Serial.print("   ");
+    //Serial.print("X: "); Serial.print(mpu6050.getAngleX()); Serial.print("   ");
+    //Serial.print("Y: "); Serial.print(mpu6050.getAngleY()); Serial.print("   ");
     Serial.println("Inainte");
   }
   
@@ -68,8 +68,8 @@ void loop() {
     controler = "Y1";
     vw_send((uint8_t *)controler, strlen(controler));
     vw_wait_tx();
-    Serial.print("X: ");Serial.print(mpu6050.getAngleX());Serial.print("   ");
-    Serial.print("Y: ");Serial.print(mpu6050.getAngleY());Serial.print("   ");
+    //Serial.print("X: ");Serial.print(mpu6050.getAngleX());Serial.print("   ");
+    //Serial.print("Y: ");Serial.print(mpu6050.getAngleY());Serial.print("   ");
     Serial.println("Stanga");
   }
   
@@ -77,8 +77,8 @@ void loop() {
     controler = "Y2";
     vw_send((uint8_t *)controler, strlen(controler));
     vw_wait_tx(); // Wait until the whole message is gone
-    Serial.print("X: ");Serial.print(mpu6050.getAngleX());Serial.print("   ");
-    Serial.print("Y: ");Serial.print(mpu6050.getAngleY());Serial.print("   ");
+    //Serial.print("X: ");Serial.print(mpu6050.getAngleX());Serial.print("   ");
+    //Serial.print("Y: ");Serial.print(mpu6050.getAngleY());Serial.print("   ");
     Serial.println("Dreapta");
   }
   
@@ -86,8 +86,8 @@ void loop() {
     controler = "A1";
     vw_send((uint8_t *)controler, strlen(controler));
     vw_wait_tx(); 
-    Serial.print("X: ");Serial.print(mpu6050.getAngleX());Serial.print("   ");
-    Serial.print("Y: ");Serial.print(mpu6050.getAngleY());Serial.print("   ");
+   // Serial.print("X: ");Serial.print(mpu6050.getAngleX());Serial.print("   ");
+    //Serial.print("Y: ");Serial.print(mpu6050.getAngleY());Serial.print("   ");
     Serial.println("Stop");
   }
 }
