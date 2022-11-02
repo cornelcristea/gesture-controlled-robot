@@ -6,3 +6,6 @@ The data is taken over by the radio receiver and will be sent to the Arduino boa
 
 Video with my project: <br>
 https://drive.google.com/file/d/1xcsSSCi7TcFfmjxvHx7c7QmNYmwO-BWC/view?usp=sharing
+
+Programming language: C 
+Tools used: Arduino IDE
