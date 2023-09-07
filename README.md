@@ -5,7 +5,7 @@ The operation of the robot, which is in fact a mini car in prototype stage, cons
 The data is taken over by the radio receiver and will be sent to the Arduino board of the robot, then through the connecting wires will be sent electrical signals to the H-bridge circuit to operate the two DC motors.
 
 Video with my project: <br>
-https://drive.google.com/file/d/1xcsSSCi7TcFfmjxvHx7c7QmNYmwO-BWC/view?usp=sharing
+https://youtu.be/4kE5ffBWL2M
 
 Programming language: C <br/>
 Tools used: Arduino IDE
