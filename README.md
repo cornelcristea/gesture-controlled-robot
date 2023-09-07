@@ -7,5 +7,3 @@ The data is taken over by the radio receiver and will be sent to the Arduino boa
 Video with my project: <br>
 https://youtu.be/4kE5ffBWL2M
 
-Programming language: C <br/>
-Tools used: Arduino IDE
