@@ -38,7 +38,7 @@ pushd %BUILD_DIR%
     echo =====================================
     echo Build robot_rx
     echo =====================================
-    arduino-cli compile -v -b arduino:avr:nano --config-file %CONFIG_YML% %BUILD_DIR%\robot_rx
+    arduino-cli compile -v -b arduino:avr:nano --config-file %CONFIG_YML% robot_rx.ino
 popd
 
 endlocal
