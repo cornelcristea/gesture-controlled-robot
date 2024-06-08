@@ -28,6 +28,7 @@ pushd %BUILD_DIR%
     echo =====================================
     arduino-cli lib install --config-file %CONFIG_YML% --zip-path %LIBS_DIR%\VirtualWire.zip
     arduino-cli lib install --config-file %CONFIG_YML% --zip-path %LIBS_DIR%\MPU6050_tockn.zip
+    arduino-cli lib install --config-file %CONFIG_YML% --zip-path %LIBS_DIR%\Wire.zip
     echo.
     echo =====================================
     echo Build controller_tx
