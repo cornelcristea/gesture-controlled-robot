@@ -2,7 +2,7 @@
 ************************************************************************
 
 Universitatea Tehnica "Gheorghe Asachi" Iasi
-Facultatea de Mecanica (Mecatronica)
+Facultatea de Mecanica
 
 ROBOT MOBIL CONTROLAT PRIN GESTURI
 Program pentru Robot (Rx)
@@ -15,7 +15,7 @@ Data          : 12/06/2020
 */
 
 // Inlcuderea bibliotecilor necesare pentru program
-#include <VirtualWire.h>    // modulul radio 433 MHz
+#include <VirtualWire.h>         // modulul radio 433 MHz
 
 // Definirea variabilelor
 int IN1 = 5;                // motorul A (+)
@@ -116,7 +116,7 @@ void inapoi() {
 }
 
 // Functia pentru deplasarea spre stanga
-void dreapta() { 
+void stanga() { 
   analogWrite(IN1, 0);
   analogWrite(IN2, viteza);
   analogWrite(IN3, viteza);
@@ -124,7 +124,7 @@ void dreapta() {
 }
 
 // Functia pentru deplasarea spre dreapta
-void stanga() { 
+void dreapta() { 
   analogWrite(IN1, viteza);
   analogWrite(IN2, 0);
   analogWrite(IN3, 0);
