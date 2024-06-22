@@ -1,11 +1,11 @@
 board_manager:
   additional_urls: []
 daemon:
-  port: "50051"
+  port: :50051
 directories:
-  data: "./data"
-  downloads: "./staging"
-  user: "./sketchbook"
+  data: ./arduino15/data
+  downloads: ../arduino15/downloads
+  user: ./arduino15/local
 library:
   enable_unsafe_install: true
 logging:
