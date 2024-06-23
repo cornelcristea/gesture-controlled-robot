@@ -5,7 +5,7 @@ daemon:
 directories:
   data: ./arduino15/data
   downloads: ../arduino15/downloads
-  user: ./arduino15/local
+  user: ./arduino15
 library:
   enable_unsafe_install: true
 logging:
