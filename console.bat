@@ -19,15 +19,15 @@ setlocal enabledelayedexpansion
         echo.
         echo The available option are:
         echo.
-        echo 1. ^Build                  ^Generate output files
-        echo 2. ^Release                ^Create release package
-        echo 3. ^Build robot            ^Compile robot code
-        echo 4. ^Build controller       ^Compile controller code             
-        echo 5. ^Update CLI             ^Update arduino-cli tool
+        echo [1]    ^Build              ^Generate output files
+        echo [2]    ^Release            ^Create release package
+        echo [3]    ^Build robot        ^Compile robot code
+        echo [4]    ^Build controller   ^Compile controller code             
+        echo [5]    ^Update CLI         ^Update arduino-cli tool
         echo.
         echo Enter your choice.
 
-        if "%1 equ "" (
+        if "%1" equ "" (
             set /p INPUT=
         ) else (
             set "INPUT=%1"            
@@ -61,7 +61,7 @@ setlocal enabledelayedexpansion
         if %INPUT% equ 4    call :Build %SRC_DIR_TX%
         if %INPUT% equ 5    call :UpdateCLI
 
-    exit /b 0
+    exit /b 0  
 endlocal
 
 :: install arduino and libraries
@@ -99,6 +99,6 @@ endlocal
 
 :: display error message
 :ErrorMsg %*
-     echo [ ERROR ] %*
+    echo [ ERROR ] %*
     exit /b 1
 
