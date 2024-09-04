@@ -28,7 +28,6 @@ jobs:
       BOARD_NAME: nano
       PLATFORM_NAME: avr
       PLATFORM_VERSION: 1.8.6
-      PATH: %GITHUB_WORKSPACE%\tools\arduino-cli;$PATH%
 
     steps:
       - name: Checkout code
@@ -36,11 +35,14 @@ jobs:
 
       - name: Download dependencies
         shell: cmd
-        run: arduino-cli core install arduino:%PLATFORM_NAME%@%PLATFORM_VERSION% --config-file %GITHUB_WORKSPACE%\config.yml
+        run: |
+          set "PATH=%GITHUB_WORKSPACE%\tools\arduino-cli;%PATH%"
+          arduino-cli core install arduino:%PLATFORM_NAME%@%PLATFORM_VERSION% --config-file %GITHUB_WORKSPACE%\config.yml
 
       - name: Install libraries
         shell: cmd
         run: |
+          set "PATH=%GITHUB_WORKSPACE%\tools\arduino-cli;%PATH%"
           for %%f in ("%GITHUB_WORKSPACE%\lib\*.zip") do (
               arduino-cli lib install --config-file %GITHUB_WORKSPACE%\config.yml --zip-path %%f
           )
@@ -48,6 +50,7 @@ jobs:
       - name: Build
         shell: cmd
         run: |
+          set "PATH=%GITHUB_WORKSPACE%\tools\arduino-cli;%PATH%"
           arduino-cli compile -v -b arduino:%PLATFORM_NAME%:%BOARD_NAME% %GITHUB_WORKSPACE%\src\robot --config-file %GITHUB_WORKSPACE%\config.yml --output-dir %GITHUB_WORKSPACE%\build
           arduino-cli compile -v -b arduino:%PLATFORM_NAME%:%BOARD_NAME% %GITHUB_WORKSPACE%\src\controller --config-file %GITHUB_WORKSPACE%\config.yml --output-dir %GITHUB_WORKSPACE%\build
 
