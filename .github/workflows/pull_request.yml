@@ -10,7 +10,7 @@
 
 name: Pull Request
 
-run-name: ${{ github.event.head_commit.message || github.event.pull_request.title || 'Unknown' }}
+run-name: ${{ github.event.pull_request.title || github.event.head_commit.message ||  'Unknown' }}
 on:
   push:
     branches:
@@ -29,12 +29,13 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Rebuild
+        shell: cmd
         run: |
-          cd $GITHUB_WORKSPACE
-          cd 
+          cd %GITHUB_WORKSPACE%
           start_console b
 
       - name: Check binary files
+        shell: cmd
         run: | 
-          cd $GITHUB_WORKSPACE
+          cd %GITHUB_WORKSPACE%
           dir build
