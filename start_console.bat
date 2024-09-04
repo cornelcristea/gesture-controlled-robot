@@ -89,7 +89,7 @@ goto :eof
     echo =====================================
     echo Install project libraries
     echo =====================================
-    for %%f in (%lib_dir%\*.zip) do (
+    for %%f in ("%lib_dir%\*.zip") do (
         arduino-cli lib install --config-file %config_yml% --zip-path %%f || call :ReturnError Library "%%f" cannot be installed.
     )
     goto :eof
