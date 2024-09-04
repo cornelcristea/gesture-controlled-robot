@@ -1,0 +1,31 @@
+###################################################
+#                                                 #
+#             Gesture Controlled Robot            #
+#                                                 #
+###################################################
+# author  : Cornel Cristea                        #
+# date    : 22/06/2024                            #
+# version : 1.0.0                                 #
+###################################################
+
+name: Pull Request
+
+run-name: ${{ github.ref_name }}
+on:
+  push:
+    branches:
+      - main
+      
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-2022
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Rebuild
+        run: start_console b
