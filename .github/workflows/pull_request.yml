@@ -24,23 +24,33 @@ jobs:
   build:
     name: Pull Request
     runs-on: windows-2022
+    env:
+      BOARD_NAME: nano
+      PLATFORM_NAME: avr
+      PLATFORM_VERSION: 1.8.6
+      PATH: %GITHUB_WORKSPACE%\tools\arduino-cli;$PATH%
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up environment
+      - name: Download dependencies
+        shell: cmd
+        run: arduino-cli core install arduino:%PLATFORM_NAME%@%PLATFORM_VERSION% --config-file %GITHUB_WORKSPACE%\config.yml
+
+      - name: Install libraries
         shell: cmd
         run: |
-          set "PATH=%GITHUB_WORKSPACE%\tools\arduino-cli;%GITHUB_WORKSPACE%\tools\7-zip;%PATH%"
+          for %%f in ("%GITHUB_WORKSPACE%\lib\*.zip") do (
+              arduino-cli lib install --config-file %GITHUB_WORKSPACE%\config.yml --zip-path %%f
+          )
 
       - name: Build
         shell: cmd
         run: |
-          cd %GITHUB_WORKSPACE%
-          start_console.bat b
+          arduino-cli compile -v -b arduino:%PLATFORM_NAME%:%BOARD_NAME% %GITHUB_WORKSPACE%\src\robot --config-file %GITHUB_WORKSPACE%\config.yml --output-dir %GITHUB_WORKSPACE%\build
+          arduino-cli compile -v -b arduino:%PLATFORM_NAME%:%BOARD_NAME% %GITHUB_WORKSPACE%\src\controller --config-file %GITHUB_WORKSPACE%\config.yml --output-dir %GITHUB_WORKSPACE%\build
 
       - name: Check binary files
         shell: cmd
-        run: | 
-          cd %GITHUB_WORKSPACE%
-          dir build
+        run: dir build
