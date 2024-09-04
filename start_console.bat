@@ -30,8 +30,8 @@ setlocal enabledelayedexpansion
         set "board_name=nano"
  
     rem set option
-        call :InfoMessage
         if "%1" equ "" (
+            call :InfoMessage
             set /p user_input=
         ) else (
             set "user_input=%1"            

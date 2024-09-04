@@ -28,6 +28,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Set up environment
+        shell: cmd
+        run: |
+          set "PATH=%GITHUB_WORKSPACE%\tools\arduino-cli;%GITHUB_WORKSPACE%\tools\7-zip;%PATH%"
+
       - name: Build
         shell: cmd
         run: |
