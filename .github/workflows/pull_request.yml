@@ -21,18 +21,18 @@ on:
       - main
 
 jobs:
-  Pull_Request:
+  build:
     name: Pull Request
     runs-on: windows-2022
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Rebuild
+      - name: Build
         shell: cmd
         run: |
           cd %GITHUB_WORKSPACE%
-          start_console b
+          start_console.bat b
 
       - name: Check binary files
         shell: cmd
