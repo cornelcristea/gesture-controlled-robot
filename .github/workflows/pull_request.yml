@@ -15,17 +15,24 @@ on:
   push:
     branches:
       - main
-      
+
   pull_request:
     branches:
       - main
 
 jobs:
-  build:
+  Pull_Request:
     runs-on: windows-2022
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Rebuild
-        run: start_console b
+        run: |
+          cd $GITHUB_WORKSPACE
+          start_console b
+
+      - name: Check binary files
+        run: | 
+          cd $GITHUB_WORKSPACE
+          dir build
