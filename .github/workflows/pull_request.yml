@@ -10,7 +10,7 @@
 
 name: Pull Request
 
-run-name: ${{ github.event.pull_request.title || 'Unknown' }}
+run-name: ${{ github.event.pull_request.title }}
 on:
   pull_request:
     branches:
