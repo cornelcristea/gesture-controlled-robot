@@ -8,7 +8,7 @@
 # version : 1.0.0                                 #
 ###################################################
 
-name: Build
+name: Pull Request
 
 run-name: ${{ github.event.pull_request.title }}
 on:
