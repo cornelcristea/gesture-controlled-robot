@@ -8,21 +8,17 @@
 # version : 1.0.0                                 #
 ###################################################
 
-name: Pull Request
+name: Build
 
-run-name: ${{ github.event.pull_request.title || github.event.head_commit.message ||  'Unknown' }}
+run-name: ${{ github.event.pull_request.title }}
 on:
-  push:
-    branches:
-      - main
-
   pull_request:
     branches:
       - main
 
 jobs:
   build:
-    name: Pull Request
+    name: Build
     runs-on: windows-2022
     env:
       BOARD_NAME: nano
@@ -47,13 +43,9 @@ jobs:
               arduino-cli lib install --config-file %GITHUB_WORKSPACE%\config.yml --zip-path %%f
           )
 
-      - name: Build
+      - name: Compile code
         shell: cmd
         run: |
           set "PATH=%GITHUB_WORKSPACE%\tools\arduino-cli;%PATH%"
           arduino-cli compile -v -b arduino:%PLATFORM_NAME%:%BOARD_NAME% %GITHUB_WORKSPACE%\src\robot --config-file %GITHUB_WORKSPACE%\config.yml --output-dir %GITHUB_WORKSPACE%\build
           arduino-cli compile -v -b arduino:%PLATFORM_NAME%:%BOARD_NAME% %GITHUB_WORKSPACE%\src\controller --config-file %GITHUB_WORKSPACE%\config.yml --output-dir %GITHUB_WORKSPACE%\build
-
-      - name: Check binary files
-        shell: cmd
-        run: dir build
