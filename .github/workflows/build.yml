@@ -42,8 +42,8 @@ jobs:
           for %%f in ("%GITHUB_WORKSPACE%\lib\*.zip") do (
               arduino-cli lib install --config-file %GITHUB_WORKSPACE%\config.yml --zip-path %%f
           )
-
-      - name: Compile code
+          
+      - name: Compile
         shell: cmd
         run: |
           set "PATH=%GITHUB_WORKSPACE%\tools\arduino-cli;%PATH%"
