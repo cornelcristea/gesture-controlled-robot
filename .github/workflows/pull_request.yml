@@ -49,7 +49,3 @@ jobs:
           set "PATH=%GITHUB_WORKSPACE%\tools\arduino-cli;%PATH%"
           arduino-cli compile -v -b arduino:%PLATFORM_NAME%:%BOARD_NAME% %GITHUB_WORKSPACE%\src\robot --config-file %GITHUB_WORKSPACE%\config.yml --output-dir %GITHUB_WORKSPACE%\build
           arduino-cli compile -v -b arduino:%PLATFORM_NAME%:%BOARD_NAME% %GITHUB_WORKSPACE%\src\controller --config-file %GITHUB_WORKSPACE%\config.yml --output-dir %GITHUB_WORKSPACE%\build
-
-      - name: Check binary files
-        shell: cmd
-        run: dir build
