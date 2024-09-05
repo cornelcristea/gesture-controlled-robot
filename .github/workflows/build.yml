@@ -8,7 +8,7 @@
 # version : 1.0.0                                 #
 ###################################################
 
-name: Pull Request
+name: Build
 
 run-name: ${{ github.event.pull_request.title }}
 on:
@@ -18,7 +18,7 @@ on:
 
 jobs:
   build:
-    name: Pull Request
+    name: Build
     runs-on: windows-2022
     env:
       BOARD_NAME: nano
@@ -43,7 +43,7 @@ jobs:
               arduino-cli lib install --config-file %GITHUB_WORKSPACE%\config.yml --zip-path %%f
           )
 
-      - name: Build
+      - name: Compile code
         shell: cmd
         run: |
           set "PATH=%GITHUB_WORKSPACE%\tools\arduino-cli;%PATH%"
