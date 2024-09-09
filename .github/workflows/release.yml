@@ -12,72 +12,48 @@ name: Release
 
 run-name: ${{ github.event.pull_request.title }}
 on:
-  pull_request:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   build:
+    uses: .\.github\workflows\build.yml 
+  
+  release:
     runs-on: windows-2022
-    env:
-      BOARD_NAME: nano
-      PLATFORM_NAME: avr
-      PLATFORM_VERSION: 1.8.6
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Download dependencies
-        shell: cmd
-        run: |
-          set "PATH=%GITHUB_WORKSPACE%\tools\arduino-cli;%PATH%"
-          arduino-cli core install arduino:%PLATFORM_NAME%@%PLATFORM_VERSION% --config-file %GITHUB_WORKSPACE%\config.yml
-
-      - name: Install libraries
-        shell: cmd
-        run: |
-          set "PATH=%GITHUB_WORKSPACE%\tools\arduino-cli;%PATH%"
-          for %%f in ("%GITHUB_WORKSPACE%\lib\*.zip") do (
-              arduino-cli lib install --config-file %GITHUB_WORKSPACE%\config.yml --zip-path %%f
-          )
-          
-      - name: Build
-        shell: cmd
-        run: |
-          set "PATH=%GITHUB_WORKSPACE%\tools\arduino-cli;%PATH%"
-          arduino-cli compile -v -b arduino:%PLATFORM_NAME%:%BOARD_NAME% %GITHUB_WORKSPACE%\src\robot --config-file %GITHUB_WORKSPACE%\config.yml --output-dir %GITHUB_WORKSPACE%\build
-          arduino-cli compile -v -b arduino:%PLATFORM_NAME%:%BOARD_NAME% %GITHUB_WORKSPACE%\src\controller --config-file %GITHUB_WORKSPACE%\config.yml --output-dir %GITHUB_WORKSPACE%\build
-
       - name: Create package
         shell: cmd
         run: |
-          rem set variables
-            set "build_dir=%GITHUB_WORKSPACE%\build"
+          set "PATH=%GITHUB_WORKSPACE%\tools\arduino-cli;%PATH%"
+
+          echo =====================================
+            echo Create delivery package
+            echo =====================================
             set "release_dir=%GITHUB_WORKSPACE%\release"
             set "robot_release_dir=%release_dir%\robot"
             set "controller_release_dir=%release_dir%\controller"
             set "delivery_zip=%GITHUB_WORKSPACE%\gesture_controlled_robot.zip"
 
-          rem create folders and copy files
-              if exist %release_dir% rmdir /s /q %release_dir%
-              if exist %delivery_zip% del /f /q %delivery_zip% 
+            rem create folders and copy files
+                if exist %release_dir% rmdir /s /q %release_dir%
+                mkdir %robot_release_dir% %controller_release_dir%
+                
+                if exist %delivery_zip% del /f /q %delivery_zip% 
 
-              mkdir %robot_release_dir% %controller_release_dir%
-
-              echo Copy output files in specific folders.
-              for %%f in ("%build_dir%\*") do (
-                  set "filename=%%~nxf"
-                  echo "!filename!" | findstr /C:"controller" >nul
-                  if !errorlevel! equ 0 (
-                      copy /y "%%f" "%controller_release_dir%"
-                  ) else (
-                      copy /y "%%f" "%robot_release_dir%"
-                  )
-              )
-              dir "%release_dir%\controller" "%release_dir%\robot" > "%release_dir%\Readme.txt"
-              
-          rem create delivery archive
-              echo Create '%delivery_zip%' archive.
-              7z a %delivery_zip% %release_dir%     
-
+                echo Copy output files in specific folders.
+                for %%f in ("%build_dir%\*") do (
+                    set "filename=%%~nxf"
+                    echo "!filename!" | findstr /C:"controller" >nul
+                    if !errorlevel! equ 0 (
+                        copy /y "%%f" "%controller_release_dir%"
+                    ) else (
+                        copy /y "%%f" "%robot_release_dir%"
+                    )
+                )
+                dir "%release_dir%\controller" "%release_dir%\robot" > "%release_dir%\Readme.txt"
+                
+            rem create delivery archive
+                echo Create '%delivery_zip%' archive.
+                7z a %delivery_zip% %release_dir%     
+            goto :eof
+        
