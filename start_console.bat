@@ -32,7 +32,6 @@ setlocal enabledelayedexpansion
     rem set option
         if "%1" equ "" (
             call :InfoMessage
-            set /p user_input=
         ) else (
             set "user_input=%1"            
         )
@@ -49,6 +48,7 @@ setlocal enabledelayedexpansion
         :: if "%user_input%" equ "" echo Input parameter invalid && exit /b 1
         
 endlocal
+
 goto :eof 
 
 :: display console info
@@ -75,7 +75,7 @@ goto :eof
     echo [br]   ^Build robot        ^Compile only robot
     echo [bc]   ^Build controller   ^Compile only controller           
     echo.
-    echo Enter your choice.
+    set /p "user_input=Enter your choice: "
     goto :eof
 
 
