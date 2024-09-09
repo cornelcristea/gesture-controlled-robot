@@ -8,17 +8,17 @@
 # version : 1.0.0                                 #
 ###################################################
 
-name: Pull Request
+name: Build
 
 run-name: ${{ github.event.pull_request.title }}
 on:
+  workflow_call:
   pull_request:
     branches:
       - main
 
 jobs:
   build:
-    name: Build
     runs-on: windows-2022
     env:
       BOARD_NAME: nano
