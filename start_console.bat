@@ -117,7 +117,7 @@ goto :eof
         if exist %release_dir% rmdir /s /q %release_dir%
         mkdir %robot_release_dir% %controller_release_dir%
 
-        if not exist %build_dir% call :ReturnError Build project first.
+        if not exist %build_dir% call start_console b
         
         if exist %delivery_zip% del /f /q %delivery_zip% 
 
