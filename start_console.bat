@@ -100,7 +100,7 @@ goto :eof
     echo =====================================
     echo Build %src_file%
     echo =====================================
-    arduino-cli compile -v -b arduino:%platform_name%:%board_name% %1 --config-file %config_yml% --output-dir %build_dir% || call :ReturnError Build failed.
+    arduino-cli compile -v -b arduino:%platform_name%:%board_name% %1 --build-property compiler.c.elf.flags="-Wl,-Map,%build_dir%\%src_file%.map" --config-file %config_yml% --output-dir %build_dir% || call :ReturnError Build failed.
     goto :eof
 
 :: create release zip archive
@@ -126,16 +126,20 @@ goto :eof
             set "filename=%%~nxf"
             echo "!filename!" | findstr /C:"controller" >nul
             if !errorlevel! equ 0 (
-                copy /y "%%f" "%controller_release_dir%" >nul || call :ReturnError %%f not found.
+                copy /y "%%f" "%controller_release_dir%" || call :ReturnError %%f not found.
             ) else (
-                copy /y "%%f" "%robot_release_dir%" >nul || call :ReturnError %%f not found.
+                copy /y "%%f" "%robot_release_dir%" || call :ReturnError %%f not found.
             )
         )
         dir "%release_dir%\controller" "%release_dir%\robot" > "%release_dir%\Readme.txt"
         
     rem create delivery archive
-        echo Create '%delivery_zip%' archive.
-        7z a %delivery_zip% %release_dir% >nul ||  call :ReturnError Archive %delivery_zip% could not be created.      
+        7z a %delivery_zip% %release_dir% >nul || call :ReturnError Archive %delivery_zip% could not be created.  
+        echo Package '%delivery_zip%' has been created.    
+    
+    rem delete release folder
+        rmdir /s /q %release_dir%
+        
     goto :eof
  
 :: display error message
