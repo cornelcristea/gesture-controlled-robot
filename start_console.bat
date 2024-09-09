@@ -32,7 +32,6 @@ setlocal enabledelayedexpansion
     rem set option
         if "%1" equ "" (
             call :InfoMessage
-            set /p user_input=
         ) else (
             set "user_input=%1"            
         )
@@ -49,6 +48,7 @@ setlocal enabledelayedexpansion
         :: if "%user_input%" equ "" echo Input parameter invalid && exit /b 1
         
 endlocal
+
 goto :eof 
 
 :: display console info
@@ -75,7 +75,7 @@ goto :eof
     echo [br]   ^Build robot        ^Compile only robot
     echo [bc]   ^Build controller   ^Compile only controller           
     echo.
-    echo Enter your choice.
+    set /p "user_input=Enter your choice: "
     goto :eof
 
 
@@ -117,7 +117,7 @@ goto :eof
         if exist %release_dir% rmdir /s /q %release_dir%
         mkdir %robot_release_dir% %controller_release_dir%
 
-        if not exist %build_dir% call :ReturnError Build project first.
+        if not exist %build_dir% call start_console b
         
         if exist %delivery_zip% del /f /q %delivery_zip% 
 

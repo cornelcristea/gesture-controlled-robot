@@ -48,6 +48,7 @@ setlocal enabledelayedexpansion
         exit /b 0
 
 endlocal
+
 goto :eof
 
 :InfoMessage 
