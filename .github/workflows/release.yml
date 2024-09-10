@@ -16,9 +16,11 @@ on:
 
 jobs:
   build:
+    name: Build
     uses: ./.github/workflows/build.yml
   
   release:
+    name: Release
     runs-on: windows-2022
     steps:
       - name: Create package
