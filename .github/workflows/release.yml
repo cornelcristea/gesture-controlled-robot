@@ -19,7 +19,6 @@ jobs:
     uses: ./.github/workflows/build.yml
   
   release:
-    name: Release SW
     runs-on: windows-2022
     steps:
       - name: Create package

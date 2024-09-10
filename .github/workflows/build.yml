@@ -18,7 +18,7 @@ on:
       - main
 
 jobs:
-    name: Build SW
+  build:
     runs-on: windows-2022
     env:
       BOARD_NAME: nano
