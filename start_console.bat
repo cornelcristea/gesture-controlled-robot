@@ -32,7 +32,6 @@ setlocal enabledelayedexpansion
     rem set option
         if "%1" equ "" (
             call :InfoMessage
-            set /p user_input=
         ) else (
             set "user_input=%1"            
         )
@@ -49,6 +48,7 @@ setlocal enabledelayedexpansion
         :: if "%user_input%" equ "" echo Input parameter invalid && exit /b 1
         
 endlocal
+
 goto :eof 
 
 :: display console info
@@ -75,7 +75,7 @@ goto :eof
     echo [br]   ^Build robot        ^Compile only robot
     echo [bc]   ^Build controller   ^Compile only controller           
     echo.
-    echo Enter your choice.
+    set /p "user_input=Enter your choice: "
     goto :eof
 
 
@@ -100,7 +100,7 @@ goto :eof
     echo =====================================
     echo Build %src_file%
     echo =====================================
-    arduino-cli compile -v -b arduino:%platform_name%:%board_name% %1 --config-file %config_yml% --output-dir %build_dir% || call :ReturnError Build failed.
+    arduino-cli compile -v -b arduino:%platform_name%:%board_name% %1 --build-property compiler.c.elf.flags="-Wl,-Map,%build_dir%\%src_file%.map" --config-file %config_yml% --output-dir %build_dir% || call :ReturnError Build failed.
     goto :eof
 
 :: create release zip archive
@@ -135,7 +135,7 @@ goto :eof
         
     rem create delivery archive
         echo Create '%delivery_zip%' archive.
-        7z a %delivery_zip% %release_dir% ||  call :ReturnError Archive %delivery_zip% could not be created.      
+        7z a %delivery_zip% %release_dir% || call :ReturnError Archive %delivery_zip% could not be created.      
     
     rem delete release folder
         if exist %release_dir% rmdir /s /q %release_dir%
