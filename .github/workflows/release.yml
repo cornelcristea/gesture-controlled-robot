@@ -10,7 +10,7 @@
 
 name: Release
 
-run-name: ${{ github.event.pull_request.title }}
+run-name: Gesture-Controlled-Robot
 on:
   workflow_dispatch:
 
@@ -26,34 +26,32 @@ jobs:
         run: |
           set "PATH=%GITHUB_WORKSPACE%\tools\arduino-cli;%PATH%"
 
-          echo =====================================
-            echo Create delivery package
-            echo =====================================
-            set "release_dir=%GITHUB_WORKSPACE%\release"
-            set "robot_release_dir=%release_dir%\robot"
-            set "controller_release_dir=%release_dir%\controller"
-            set "delivery_zip=%GITHUB_WORKSPACE%\gesture_controlled_robot.zip"
+          set "release_dir=%GITHUB_WORKSPACE%\release"
+          set "robot_release_dir=%release_dir%\robot"
+          set "controller_release_dir=%release_dir%\controller"
+          set "delivery_zip=%GITHUB_WORKSPACE%\gesture_controlled_robot.zip"
 
-            rem create folders and copy files
-                if exist %release_dir% rmdir /s /q %release_dir%
-                mkdir %robot_release_dir% %controller_release_dir%
+          rem create folders and copy files
+            if exist %release_dir% rmdir /s /q %release_dir%
+            mkdir %robot_release_dir% %controller_release_dir%
                 
-                if exist %delivery_zip% del /f /q %delivery_zip% 
+          if exist %delivery_zip% del /f /q %delivery_zip% 
 
-                echo Copy output files in specific folders.
-                for %%f in ("%build_dir%\*") do (
-                    set "filename=%%~nxf"
-                    echo "!filename!" | findstr /C:"controller" >nul
-                    if !errorlevel! equ 0 (
-                        copy /y "%%f" "%controller_release_dir%"
-                    ) else (
-                        copy /y "%%f" "%robot_release_dir%"
-                    )
-                )
-                dir "%release_dir%\controller" "%release_dir%\robot" > "%release_dir%\Readme.txt"
+          echo Copy output files in specific folders.
+            for %%f in ("%build_dir%\*") do (
+              set "filename=%%~nxf"
+              echo "!filename!" | findstr /C:"controller" >nul
+              if !errorlevel! equ 0 (
+                copy /y "%%f" "%controller_release_dir%"
+              ) else (
+                copy /y "%%f" "%robot_release_dir%"
+              )
+            )
+
+          dir "%release_dir%\controller" "%release_dir%\robot" > "%release_dir%\Readme.txt"
                 
-            rem create delivery archive
-                echo Create '%delivery_zip%' archive.
-                7z a %delivery_zip% %release_dir%     
-            goto :eof
+          rem create delivery archive
+            echo Create '%delivery_zip%' archive.
+            7z a %delivery_zip% %release_dir%     
+
         
