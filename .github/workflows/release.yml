@@ -7,3 +7,57 @@
 # date    : 22/06/2024                            #
 # version : 1.0.0                                 #
 ###################################################
+
+name: Release
+
+run-name: Gesture-Controlled-Robot
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build
+    uses: ./.github/workflows/build.yml
+  
+  release:
+    name: Release
+    runs-on: windows-2022
+    steps:
+      - name: Create package
+        shell: cmd
+        run: |
+          set "PATH=%GITHUB_WORKSPACE%\tools\arduino-cli;%PATH%"
+
+          set "release_dir=%GITHUB_WORKSPACE%\release"
+          set "robot_release_dir=%release_dir%\robot"
+          set "controller_release_dir=%release_dir%\controller"
+          set "delivery_zip=%GITHUB_WORKSPACE%\gesture_controlled_robot.zip"
+
+          rem create folders and copy files
+            if exist %release_dir% rmdir /s /q %release_dir%
+            mkdir %robot_release_dir% %controller_release_dir%
+                
+          if exist %delivery_zip% del /f /q %delivery_zip% 
+
+          echo Copy output files in specific folders.
+            for %%f in ("%build_dir%\*") do (
+              set "filename=%%~nxf"
+              echo "!filename!" | findstr /C:"controller" >nul
+              if !errorlevel! equ 0 (
+                copy /y "%%f" "%controller_release_dir%"
+              ) else (
+                copy /y "%%f" "%robot_release_dir%"
+              )
+            )
+
+          dir "%release_dir%\controller" "%release_dir%\robot" > "%release_dir%\Readme.txt"
+                
+          rem create delivery archive
+            echo Create '%delivery_zip%' archive.
+            7z a %delivery_zip% %release_dir%     
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with: 
+          name: gesture_controlled_robot
+          path: ./gesture_controlled_robot.zip

@@ -134,12 +134,12 @@ goto :eof
         dir "%release_dir%\controller" "%release_dir%\robot" > "%release_dir%\Readme.txt"
         
     rem create delivery archive
-        7z a %delivery_zip% %release_dir% >nul || call :ReturnError Archive %delivery_zip% could not be created.  
-        echo Package '%delivery_zip%' has been created.    
+        echo Create '%delivery_zip%' archive.
+        7z a %delivery_zip% %release_dir% || call :ReturnError Archive %delivery_zip% could not be created.      
     
     rem delete release folder
-        rmdir /s /q %release_dir%
-        
+        if exist %release_dir% rmdir /s /q %release_dir%
+
     goto :eof
  
 :: display error message
