@@ -117,7 +117,7 @@ goto :eof
         if exist %release_dir% rmdir /s /q %release_dir%
         mkdir %robot_release_dir% %controller_release_dir%
 
-        if not exist %build_dir% call :ReturnError Build project first.
+        if not exist %build_dir% call start_console b
         
         if exist %delivery_zip% del /f /q %delivery_zip% 
 
@@ -126,16 +126,20 @@ goto :eof
             set "filename=%%~nxf"
             echo "!filename!" | findstr /C:"controller" >nul
             if !errorlevel! equ 0 (
-                copy /y "%%f" "%controller_release_dir%" >nul || call :ReturnError %%f not found.
+                copy /y "%%f" "%controller_release_dir%" || call :ReturnError %%f not found.
             ) else (
-                copy /y "%%f" "%robot_release_dir%" >nul || call :ReturnError %%f not found.
+                copy /y "%%f" "%robot_release_dir%" || call :ReturnError %%f not found.
             )
         )
         dir "%release_dir%\controller" "%release_dir%\robot" > "%release_dir%\Readme.txt"
         
     rem create delivery archive
         echo Create '%delivery_zip%' archive.
-        7z a %delivery_zip% %release_dir% >nul ||  call :ReturnError Archive %delivery_zip% could not be created.      
+        7z a %delivery_zip% %release_dir% ||  call :ReturnError Archive %delivery_zip% could not be created.      
+    
+    rem delete release folder
+        if exist %release_dir% rmdir /s /q %release_dir%
+
     goto :eof
  
 :: display error message
