@@ -54,4 +54,8 @@ jobs:
             echo Create '%delivery_zip%' archive.
             7z a %delivery_zip% %release_dir%     
 
-        
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with: 
+          name: gesture_controlled_robot
+          path: ./gesture_controlled_robot.zip
