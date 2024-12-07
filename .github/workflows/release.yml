@@ -19,11 +19,8 @@ on:
         required: true
 
 jobs:
-  Release:
+  release:
     runs-on: windows-2022
-
-    env:
-      ZIP_FILE: binary_files.zip
 
     steps:
       - name: Checkout code
@@ -58,12 +55,12 @@ jobs:
           git config --global user.email "%GITHUB_EMAIL%"
 
           git checkout -b %RELEASE_BRANCH%
-          git add %ZIP_FILE%
+          git add .
           git commit -m "upload zip archive"
           git push https://x-access-token:%GITHUB_TOKEN%@github.com/${{ github.repository }} "%RELEASE_BRANCH%"
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with: 
-          name: ${{ env.ZIP_FILE }}
-          path: ./${{ env.ZIP_FILE }}
+          name: binary_files.zip
+          path: ./binary_files.zip
