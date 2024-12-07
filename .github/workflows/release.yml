@@ -10,7 +10,7 @@
 
 name: Release
 
-run-name: Gesture-Controlled-Robot
+run-name: Release
 on:
   workflow_dispatch:
     inputs:
