@@ -74,15 +74,15 @@ goto :eof
     echo :: version : 1.0.0                                 ::
     echo :::::::::::::::::::::::::::::::::::::::::::::::::::::
     echo.
-    echo To generate binary files, the libraries and arduino
-    echo dependencies have to be installed first.
+    echo To generate binary files, arduino platform and 
+    echo project libraries have to be installed first.
     echo.
     echo The available options are:
     echo.
     echo [b]    ^Build              ^Generate binary files
     echo [r]    ^Release            ^Create delivery archive
     echo [l]    ^Libraries          ^Install project libraries
-    echo [a]    ^Arduino            ^Install arduino dependencies
+    echo [a]    ^Arduino            ^Install arduino platform
     echo [br]   ^Build robot        ^Compile only robot
     echo [bc]   ^Build controller   ^Compile only controller
     echo.
