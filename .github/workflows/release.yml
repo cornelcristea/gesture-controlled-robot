@@ -13,51 +13,44 @@ name: Release
 run-name: Gesture-Controlled-Robot
 on:
   workflow_dispatch:
+    inputs:
+      VERSION:
+        description: "Set the project version for this release (e.g. 2.0)"
+        required: true
 
 jobs:
-  build:
-    name: Build
-    uses: ./.github/workflows/build.yml
-  
   release:
     name: Release
     runs-on: windows-2022
+    env:
+      RELEASE_BRANCH: release/v${{ github.event.inputs.VERSION }}
+
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build
+        shell: cmd
+        run : start_console.bat b
+
       - name: Create package
         shell: cmd
+        run : start_console.bat r
+
+      - name: Update repository
+        shell: cmd
         run: |
-          set "PATH=%GITHUB_WORKSPACE%\tools\arduino-cli;%PATH%"
-
-          set "release_dir=%GITHUB_WORKSPACE%\release"
-          set "robot_release_dir=%release_dir%\robot"
-          set "controller_release_dir=%release_dir%\controller"
-          set "delivery_zip=%GITHUB_WORKSPACE%\gesture_controlled_robot.zip"
-
-          rem create folders and copy files
-            if exist %release_dir% rmdir /s /q %release_dir%
-            mkdir %robot_release_dir% %controller_release_dir%
-                
-          if exist %delivery_zip% del /f /q %delivery_zip% 
-
-          echo Copy output files in specific folders.
-            for %%f in ("%build_dir%\*") do (
-              set "filename=%%~nxf"
-              echo "!filename!" | findstr /C:"controller" >nul
-              if !errorlevel! equ 0 (
-                copy /y "%%f" "%controller_release_dir%"
-              ) else (
-                copy /y "%%f" "%robot_release_dir%"
-              )
-            )
-
-          dir "%release_dir%\controller" "%release_dir%\robot" > "%release_dir%\Readme.txt"
-                
-          rem create delivery archive
-            echo Create '%delivery_zip%' archive.
-            7z a %delivery_zip% %release_dir%     
+          git checkout -b %RELEASE_BRANCH%
+          git add binary_files.zip
+          git commit -m "upload zip archive"
+          git push origin %RELEASE_BRANCH%
+          git merge to main
+          git checkout main
+          git merge %RELEASE_BRANCH%
+          git push origin main
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with: 
-          name: gesture_controlled_robot
-          path: ./gesture_controlled_robot.zip
+          name: binary_files
+          path: ./binary_files.zip
