@@ -24,6 +24,7 @@ jobs:
     runs-on: windows-2022
     env:
       RELEASE_BRANCH: release/v${{ github.event.inputs.RELEASE_VERSION }}
+      TARGET_BRANCH: main
 
     steps:
       - name: Checkout code
@@ -52,10 +53,10 @@ jobs:
           git add binary_files.zip
           git commit -m "upload zip archive"
           git push origin %RELEASE_BRANCH%
-          git merge to main
-          git checkout main
+          git merge to %TARGET_BRANCH%
+          git checkout %TARGET_BRANCH%
           git merge %RELEASE_BRANCH%
-          git push origin main
+          git push origin %TARGET_BRANCH%
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
