@@ -82,7 +82,7 @@ goto :eof
     echo [b]    ^Build              ^Generate binary files
     echo [r]    ^Release            ^Create delivery archive
     echo [l]    ^Libraries          ^Install project libraries
-    echo [a]    ^Arduino            ^Install arduino dependencies
+    echo [a]    ^Arduino            ^Install arduino platform
     echo [br]   ^Build robot        ^Compile only robot
     echo [bc]   ^Build controller   ^Compile only controller
     echo.
