@@ -74,8 +74,8 @@ goto :eof
     echo :: version : 1.0.0                                 ::
     echo :::::::::::::::::::::::::::::::::::::::::::::::::::::
     echo.
-    echo To generate binary files, the libraries and arduino
-    echo dependencies have to be installed first.
+    echo To generate binary files, arduino platform and 
+    echo project libraries have to be installed first.
     echo.
     echo The available options are:
     echo.
