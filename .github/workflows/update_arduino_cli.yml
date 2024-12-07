@@ -41,12 +41,14 @@ jobs:
 
       - name: Push changes
         run: |
-          set UPDATE_BRANCH=update/Arduino_CLI_${{ github.event.inputs.RELEASE_VERSION }}
+          set UPDATE_BRANCH=update/arduino_cli_${{ github.event.inputs.RELEASE_VERSION }}
 
           git config --global user.name "%GITHUB_USER%"
           git config --global user.email "%GITHUB_EMAIL%"
 
-          git checkout -b %UPDATE_BRANCH%
-          git add .
-          git commit -m "add new files"
-          git push https://x-access-token:%GITHUB_TOKEN%@github.com/${{ github.repository }} "%UPDATE_BRANCH%"
+          git diff --exit-code || (
+            git checkout -b %UPDATE_BRANCH%
+            git add .
+            git commit -m "add new files"
+            git push https://x-access-token:%GITHUB_TOKEN%@github.com/${{ github.repository }} "%UPDATE_BRANCH%"
+          )
