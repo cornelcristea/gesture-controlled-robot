@@ -111,7 +111,7 @@ goto :eof
     set "release_dir=%root_dir%\release"
     set "robot_release_dir=%release_dir%\robot"
     set "controller_release_dir=%release_dir%\controller"
-    set "delivery_zip=%root_dir%\gesture_controlled_robot.zip"
+    set "delivery_zip=%root_dir%\binary_files.zip"
 
     rem create folders and copy files
         if exist %release_dir% rmdir /s /q %release_dir%
