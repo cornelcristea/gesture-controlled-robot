@@ -22,10 +22,12 @@ jobs:
   release:
     name: Release
     runs-on: windows-2022
-    env:
-      RELEASE_BRANCH: release/v${{ github.event.inputs.RELEASE_VERSION }}
-      TARGET_BRANCH: main
 
+    env:
+      RELEASE_TAG: v${{ github.event.inputs.RELEASE_VERSION }}
+      RELEASE_BRANCH: release/%RELEASE_TAG%
+      TARGET_BRANCH: main
+      
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -53,10 +55,12 @@ jobs:
           git add binary_files.zip
           git commit -m "upload zip archive"
           git push origin %RELEASE_BRANCH%
-          git merge to %TARGET_BRANCH%
+          
           git checkout %TARGET_BRANCH%
           git merge %RELEASE_BRANCH%
-          git push origin %TARGET_BRANCH%
+          
+          git tag %RELEASE_TAG%
+          git push origin %TARGET_BRANCH% %RELEASE_TAG%
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
