@@ -10,11 +10,11 @@
 
 name: Release
 
-run-name: Gesture-Controlled-Robot
+run-name: Release
 on:
   workflow_dispatch:
     inputs:
-      VERSION:
+      RELEASE_VERSION:
         description: "Set the project version for this release (e.g. 2.0)"
         required: true
 
@@ -22,35 +22,52 @@ jobs:
   release:
     name: Release
     runs-on: windows-2022
+
     env:
-      RELEASE_BRANCH: release/v${{ github.event.inputs.VERSION }}
+      ARTIFACT_FILE: binary_file.zip
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Install Arduino
+        shell: cmd
+        run : start_console a
+
+      - name: Install project libraries
+        shell: cmd
+        run : start_console l
+
       - name: Build
         shell: cmd
-        run : start_console.bat b
+        run : start_console b
 
       - name: Create package
         shell: cmd
-        run : start_console.bat r
+        run : start_console r
 
       - name: Update repository
         shell: cmd
         run: |
+
+          set RELEASE_TAG=v${{ github.event.inputs.RELEASE_VERSION }}
+          set RELEASE_BRANCH=release/%RELEASE_TAG%
+          set TARGET_BRANCH=main
+          set "COMMIT_MESSAGE=upload zip archive"
+
           git checkout -b %RELEASE_BRANCH%
-          git add binary_files.zip
-          git commit -m "upload zip archive"
+          git add %ARTIFACT_FILE%
+          git commit -m "%COMMIT_MESSAGE%"
           git push origin %RELEASE_BRANCH%
-          git merge to main
-          git checkout main
+          
+          git checkout %TARGET_BRANCH%
           git merge %RELEASE_BRANCH%
-          git push origin main
+          
+          git tag %RELEASE_TAG%
+          git push origin %TARGET_BRANCH% %RELEASE_TAG%
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with: 
-          name: binary_files
-          path: ./binary_files.zip
+          name: ${{ env.ARTIFACT_FILE }}
+          path: ./${{ env.ARTIFACT_FILE }}
