@@ -24,10 +24,8 @@ jobs:
     runs-on: windows-2022
 
     env:
-      RELEASE_TAG: v${{ github.event.inputs.RELEASE_VERSION }}
-      RELEASE_BRANCH: release/%RELEASE_TAG%
-      TARGET_BRANCH: main
-      
+      ARTIFACT_FILE: binary_file.zip
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -51,9 +49,15 @@ jobs:
       - name: Update repository
         shell: cmd
         run: |
+
+          set RELEASE_TAG=v${{ github.event.inputs.RELEASE_VERSION }}
+          set RELEASE_BRANCH=release/%RELEASE_TAG%
+          set TARGET_BRANCH=main
+          set "COMMIT_MESSAGE=upload zip archive"
+
           git checkout -b %RELEASE_BRANCH%
-          git add binary_files.zip
-          git commit -m "upload zip archive"
+          git add %ARTIFACT_FILE%
+          git commit -m "%COMMIT_MESSAGE%"
           git push origin %RELEASE_BRANCH%
           
           git checkout %TARGET_BRANCH%
@@ -65,5 +69,5 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with: 
-          name: binary_files
-          path: ./binary_files.zip
+          name: ${{ env.ARTIFACT_FILE }}
+          path: ./${{ env.ARTIFACT_FILE }}
