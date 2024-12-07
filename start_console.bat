@@ -18,9 +18,14 @@ setlocal enabledelayedexpansion
         set "lib_dir=%workdir%\lib"
         set "arduino_cli_path=%workdir%\tools\arduino-cli"
         set "build_dir=%workdir%\build"
+        set "log_dir=%workdir%\log"
         set "config_yml=%workdir%\config.yml"
         set "path_7zip=%workdir%\tools\7-zip"
         set "arduino_dir=%workdir%\arduino15\data\packages\arduino\hardware\%platform_name%\%platform_version%"
+        set "release_dir=%workdir%\release"
+        set "robot_release_dir=%release_dir%\robot"
+        set "controller_release_dir=%release_dir%\controller"
+        set "delivery_zip=%workdir%\binary_files.zip"
 
     rem update PATH variable
         set "PATH=%PATH%;%arduino_cli_path%;%path_7zip%"
@@ -33,15 +38,15 @@ setlocal enabledelayedexpansion
     rem set option
         call :InfoMessage
         if "%1" equ "" (
-            set /p "user_input=Enter your choice: "
+            set /p "user_input=Enter your choice: " && echo.
         ) else (
             set "user_input=%1"
-            echo Selected option: %user_input%           
+            echo Selected option: %user_input% && echo.       
         )
- 
-    rem install arduino packages
-
-
+        
+    rem create logs folder
+        if not exist %log_dir% mkdir %log_dir%
+         
     rem call specific function for user_input
         if "%user_input%"=="b"      call :Build %robot_src_dir% && call :Build %controller_src_dir%
         if "%user_input%"=="r"      call :Release
@@ -76,8 +81,8 @@ goto :eof
     echo.
     echo [b]    ^Build              ^Generate binary files
     echo [r]    ^Release            ^Create delivery archive
-    echo [l]    ^Install libraries  ^Compile only controller   
-    echo [a]    ^Install arduino    ^Install arduino packages   
+    echo [l]    ^Libraries          ^Install project libraries
+    echo [a]    ^Arduino            ^Install arduino dependencies
     echo [br]   ^Build robot        ^Compile only robot
     echo [bc]   ^Build controller   ^Compile only controller
     echo.
@@ -86,18 +91,21 @@ goto :eof
 
 :: install arduino package
 :InstallArduino
-   call :PrintStep Download Arduino dependencies
+    call :PrintStep Download Arduino platform
     arduino-cli core install arduino:%platform_name%@%platform_version% ^
-        --config-file %config_yml% || call :ReturnError Arduino installation failed.
+        --config-file %config_yml% ^
+        --log-file %log_dir%\install_arduino.log || call :ReturnError Platform arduino:%platform_name%@%platform_version% installation failed.
     exit /b
     
 :: install project libraries
 :InstallLibraries
-    call :PrintStep Install project libraries
+    call :PrintStep Install libraries
     for %%f in ("%lib_dir%\*.zip") do (
+        set "lib_name=%%~nf"
         arduino-cli lib install ^
             --config-file %config_yml% ^
-            --zip-path %%f || call :ReturnError Library "%%f" cannot be installed.
+            --zip-path %%f ^
+            --log-file %log_dir%\install_!lib_name!.log || call :ReturnError Library '%%f' installed failed.
     )
     exit /b
 
@@ -114,17 +122,13 @@ goto :eof
     arduino-cli compile -v -b arduino:%platform_name%:%board_name% %1 ^
         --build-property compiler.c.elf.flags="-Wl,-Map,%build_dir%\%src_file%.map" ^
         --config-file %config_yml% ^
-        --log-file %workdir%\build_%src_file%.log ^
-        --output-dir %build_dir% || call :ReturnError Build failed.
+        --output-dir %build_dir% ^
+        --log-file %log_dir%\build_%src_file%.log || call :ReturnError Build failed.
     exit /b
 
 :: create release zip archive
 :Release
     call :PrintStep Create delivery package
-    set "release_dir=%workdir%\release"
-    set "robot_release_dir=%release_dir%\robot"
-    set "controller_release_dir=%release_dir%\controller"
-    set "delivery_zip=%workdir%\binary_files.zip"
 
     rem create folders and copy files
         if exist %release_dir% rmdir /s /q %release_dir%
