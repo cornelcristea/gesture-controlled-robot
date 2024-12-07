@@ -4,25 +4,25 @@
 #                                                 #
 ###################################################
 # author  : Cornel Cristea                        #
-# date    : 22/06/2024                            #
+# date    : 07/12/2024                            #
 # version : 1.0.0                                 #
 ###################################################
 
-name: Release
+name: Update Arduino CLI
 
-run-name: Release
+run-name: Update Arduino CLI
 on:
   workflow_dispatch:
     inputs:
-      RELEASE_VERSION:
-        description: "Set the project version for this release (e.g. 2.0)"
+      ARDUINO_CLI_VERSION:
+        description: "Set new version for tool (e.g. 1.1.0)"
         required: true
 
 jobs:
-  release:
-    name: v${{ github.event.inputs.RELEASE_VERSION }}
+  update-arduino-cli:
+    name: ${{ github.event.inputs.ARDUINO_CLI_VERSION }}
     runs-on: windows-2022
-
+    
     defaults:
       run:
         shell: cmd
@@ -36,32 +36,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install Arduino platform
-        run : start_console a
-
-      - name: Install project libraries
-        run : start_console l
-
-      - name: Build
-        run : start_console b
-
-      - name: Create package
-        run : start_console r
+      - name: Update Arduino CLI
+        run : update_arduino_cli.bat ${{ github.event.inputs.ARDUINO_CLI_VERSION }}
 
       - name: Push changes
         run: |
-          set RELEASE_BRANCH=release/v${{ github.event.inputs.RELEASE_VERSION }}
+          set UPDATE_BRANCH=update/Arduino_CLI_${{ github.event.inputs.RELEASE_VERSION }}
 
           git config --global user.name "%GITHUB_USER%"
           git config --global user.email "%GITHUB_EMAIL%"
 
-          git checkout -b %RELEASE_BRANCH%
+          git checkout -b %UPDATE_BRANCH%
           git add .
-          git commit -m "upload zip archive"
-          git push https://x-access-token:%GITHUB_TOKEN%@github.com/${{ github.repository }} "%RELEASE_BRANCH%"
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with: 
-          name: binary_files.zip
-          path: ./binary_files.zip
+          git commit -m "add new files"
+          git push https://x-access-token:%GITHUB_TOKEN%@github.com/${{ github.repository }} "%UPDATE_BRANCH%"
