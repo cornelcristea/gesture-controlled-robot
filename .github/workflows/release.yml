@@ -14,7 +14,7 @@ run-name: Gesture-Controlled-Robot
 on:
   workflow_dispatch:
     inputs:
-      VERSION:
+      RELEASE_VERSION:
         description: "Set the project version for this release (e.g. 2.0)"
         required: true
 
@@ -23,19 +23,27 @@ jobs:
     name: Release
     runs-on: windows-2022
     env:
-      RELEASE_BRANCH: release/v${{ github.event.inputs.VERSION }}
+      RELEASE_BRANCH: release/v${{ github.event.inputs.RELEASE_VERSION }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Install Arduino
+        shell: cmd
+        run : start_console a
+
+      - name: Install project libraries
+        shell: cmd
+        run : start_console l
+
       - name: Build
         shell: cmd
-        run : start_console.bat b
+        run : start_console b
 
       - name: Create package
         shell: cmd
-        run : start_console.bat r
+        run : start_console r
 
       - name: Update repository
         shell: cmd
