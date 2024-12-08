@@ -1,0 +1,42 @@
+###################################################
+#                                                 #
+#             Gesture Controlled Robot            #
+#                                                 #
+###################################################
+# author  : Cornel Cristea                        #
+# date    : 08/12/2024                            #
+# version : 1.0.0                                 #
+###################################################
+
+run-name: Nightly
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: 0 0 * * 1,3,5 # monday, wednesday and friday at midnight
+
+jobs:
+  nightly:
+    runs-on: windows-2022
+
+    defaults:
+      run:
+        shell: cmd
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Arduino platform
+        run : start_console a
+
+      - name: Install project libraries
+        run : start_console l
+
+      - name: Compile robot
+        run : start_console br
+
+      - name: Compile controller
+        run : start_console bc
+
+      - name: Create package
+        run : start_console r
