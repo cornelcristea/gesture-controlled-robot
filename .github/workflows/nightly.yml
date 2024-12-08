@@ -8,6 +8,8 @@
 # version : 1.0.0                                 #
 ###################################################
 
+name: Nightly
+
 run-name: Nightly
 on:
   workflow_dispatch:
