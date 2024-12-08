@@ -49,6 +49,6 @@ jobs:
           git diff --exit-code || (
             git checkout -b %UPDATE_BRANCH%
             git add .
-            git commit -m "add exe file"
+            git commit -m "arduino-cli ${{ github.event.inputs.ARDUINO_CLI_VERSION }}"
             git push https://x-access-token:%GITHUB_TOKEN%@github.com/${{ github.repository }} "%UPDATE_BRANCH%"
           )
