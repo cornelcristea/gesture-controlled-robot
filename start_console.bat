@@ -18,7 +18,7 @@ setlocal enabledelayedexpansion
         set "lib_dir=%workdir%\lib"
         set "arduino_cli_path=%workdir%\tools\arduino-cli"
         set "build_dir=%workdir%\build"
-        set "log_dir=%workdir%\log"
+        set "log_dir=%workdir%\logs"
         set "config_yml=%workdir%\config.yml"
         set "path_7zip=%workdir%\tools\7-zip"
         set "arduino_dir=%workdir%\arduino15\data\packages\arduino\hardware\%platform_name%\%platform_version%"
