@@ -37,11 +37,11 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Update Arduino CLI
-        run : update_arduino_cli.bat ${{ github.event.inputs.ARDUINO_CLI_VERSION }}
+        run : update_arduino_cli ${{ github.event.inputs.ARDUINO_CLI_VERSION }}
 
       - name: Push changes
         run: |
-          set UPDATE_BRANCH=update/arduino_cli_${{ github.event.inputs.RELEASE_VERSION }}
+          set UPDATE_BRANCH=update/Arduino_CLI_${{ github.event.inputs.RELEASE_VERSION }}
 
           git config --global user.name "%GITHUB_USER%"
           git config --global user.email "%GITHUB_EMAIL%"
