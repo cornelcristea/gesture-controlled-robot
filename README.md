@@ -6,24 +6,24 @@
 
 
 ## <b>Table of Content</b>
-- [Description](#description)
-- [Project structure](#project-structure)
-- [Build environment](#build-environment)
-- [Software Test](#software-test)
-- [Flashing board](#flashing-board)
-- [Update Arduino CLI](#update-arduino-cli)
-- [Continuous Integration](#continuous-integration)
-- [Dev Container](#dev-container)
-- [Release package](#release-package)
-- [Demo](#demo)
+1.  [Description](#1-description)
+2.  [Project structure](#2-project-structure)
+3.  [Build environment](#3-build-environment)
+4.  [Software Test](#4-software-test)
+5.  [Flashing board](#5-flashing-board)
+6.  [Update Arduino CLI](#6-update-arduino-cli)
+7.  [Continuous Integration](#7-continuous-integration)
+8.  [Dev Container](#8-dev-container)
+9.  [Release package](#9-release-package)
+10. [Demo](#10-demo)
 
-## <b>Description</b>
+## <b>1. Description</b>
 The operation of the robot, consists in taking over the data from the accelerometer by the Arduino board of the controller according to its orientation, and this data will be transmitted to the robot through the radio transmitter module. 
 
 The data is taken over by the radio receiver and will be sent to the Arduino board of the robot, then through the connecting wires will be sent electrical signals to the H-bridge circuit to operate the two DC motors.
 
 
-## <b>Project structure</b>
+## <b>2. Project structure</b>
 This small project is structured in several folders and files as following: <br>
 ```
 .
@@ -72,7 +72,7 @@ This small project is structured in several folders and files as following: <br>
 The archive that contains binary files generated during release process is created using [7-Zip](https://7-zip.org/download.html) tool.
 
 
-## <b>Build environment</b>
+## <b>3. Build environment</b>
 The main program used for mainly action on this project is `start_console.bat` script that can be found on root folder.
 This program can be executed in silent mode (no user interaction) by openig a terminal in root folder of repository and run the following command:<br>
 
@@ -114,14 +114,14 @@ This table provides an overview of the binary files generated during the build p
 
 For more details on how to configure and use Arduino CLI, refer to the [Arduino CLI documentation](https://arduino.github.io/arduino-cli/latest/).
 
-## <b>Software test</b>
+## <b>4. Software test</b>
 To be done.
 
-## <b>Flashing board</b>
+## <b>5. Flashing board</b>
 Use Arduino CLI.<br>
 To be done.
 
-## <b>Update Arduino CLI</b>
+## <b>6. Update Arduino CLI</b>
 As it's mentioned before, this tool is the heart of build process. If a new version of this tool is released in order to solve a discovered bug in the previous one, a script was developed to be easier for user to achive this goal.<br>
 
 From root folder of this repository, open `update_arduino_cli.bat` script and enter the new version.
@@ -131,7 +131,7 @@ This process can be done in silent mode by opening a terminal in root folder and
     update_arduino_cli.bat <NEW_VERSION>
 where the `<NEW_VERSION>` argument represents the new version of Arduino CLI.
 
-## <b>Continuous Integration</b>
+## <b>5. Continuous Integration</b>
 To simplify the working process, some workflows were developed as following:
 
 - <b>Build</b><br>
@@ -152,14 +152,14 @@ To simplify the working process, some workflows were developed as following:
 
 The mentioned workflows can be found on [Actions](https://github.com/cornelcristea/gesture-controlled-robot/actions) section from this project.
 
-## <b>Dev Container</b>
+## <b>8. Dev Container</b>
 To be done.
 
-## <b>Release package</b>
+## <b>9. Release package</b>
 At the moment it's a ZIP archive.<br>
 To be created a package as Docker image and to be uploaded on GitJHub ppackages repository.
 
-## <b>Demo</b>
+## <b>10. Demo</b>
 
 [![Watch the video](https://img.youtube.com/vi/4kE5ffBWL2M/0.jpg)](https://www.youtube.com/watch?v=4kE5ffBWL2M)
 
