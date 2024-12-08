@@ -29,8 +29,8 @@ jobs:
 
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      GITHUB_USER: GitHub Actions Bot
-      GITHUB_EMAIL: actions@github.com
+      GITHUB_USER: ${{ secrets.ACTIONS_USER }}
+      GITHUB_EMAIL: ${{ secrets.ACTIONS_EMAIL }}
 
     steps:
       - name: Checkout code
