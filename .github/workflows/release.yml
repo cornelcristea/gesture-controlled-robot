@@ -8,6 +8,8 @@
 # version : 1.0.0                                 #
 ###################################################
 
+name: Release
+
 run-name: Release
 on:
   workflow_dispatch:
