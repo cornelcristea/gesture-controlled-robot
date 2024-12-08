@@ -12,8 +12,9 @@
 setlocal enabledelayedexpansion
 
     rem update PATH variable
-        set "arduino_cli_path=%~dp0\arduino-cli"
-        set "PATH=%PATH%;%arduino_cli_path%"
+        set "workdir=%cd%"
+        set "arduino_cli_path=%workdir%\tools\arduino-cli"
+        set "PATH=%arduino_cli_path%;%PATH%"
 
     rem get current version
         set "current_version="
@@ -21,20 +22,20 @@ setlocal enabledelayedexpansion
         for /f "tokens=1-3 delims=." %%a in ("!version_string!") do set "current_version=%%a.%%b.%%c"
 
     rem get version from input
-        if "%1" neq "" ( 
-            set "ARDUINO_CLI_VERSION=%1" 
-        ) else (
+        if "%1" equ "" ( 
             call :InfoMessage %current_version%
-            set /p ARDUINO_CLI_VERSION=
+            set /p "ARDUINO_CLI_VERSION=Enter the new version: "            
+        ) else (
+            set "ARDUINO_CLI_VERSION=%1" 
         )
 
-    rem check version
+    rem check if new version is already installed
         if "%ARDUINO_CLI_VERSION%" == "%current_version%" (
             call :PrintInfo arduino-cli %ARDUINO_CLI_VERSION% already installed.
             exit /b 0
         )
 
-    rem get desired version
+    rem download new version
         set "arduino_cli_url=https://downloads.arduino.cc/arduino-cli/arduino-cli_%ARDUINO_CLI_VERSION%_Windows_64bit.zip"
         set "arduino_cli_zip=%arduino_cli_path%\arduino-cli_%ARDUINO_CLI_VERSION%_Windows_64bit.zip"
 
@@ -48,13 +49,15 @@ setlocal enabledelayedexpansion
         exit /b 0
 
 endlocal
-goto :eof
+
+exit /b
 
 :InfoMessage 
     echo.
     echo :::::::::::::::::::::::::::::::::::::::::::::::::::::
     echo ::                                                 ::
-    echo ::             Gesture Controlled Robot            ::
+    echo ::             GESTURE CONTROLLED ROBOT            ::
+    echo ::                Build Environment                ::
     echo ::                                                 ::
     echo :::::::::::::::::::::::::::::::::::::::::::::::::::::
     echo :: author  : Cornel Cristea                        ::
@@ -62,16 +65,17 @@ goto :eof
     echo :: version : 1.0.0                                 ::
     echo :::::::::::::::::::::::::::::::::::::::::::::::::::::
     echo.
-    echo This program is used to update arduino-cli tool        
+    echo This program is used to update Arduino CLI tool        
     echo.
     echo Current version : %1
     echo.
     echo Enter the new version (e.g: 1.0.1) 
-    goto :eof
+    exit /b 0
 
 :ReturnError 
     echo [ ERROR ] %*
-    exit /b 1
+    exit 1
 
 :PrintInfo
     echo [ INFO ] %*
+    exit /b

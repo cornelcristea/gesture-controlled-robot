@@ -12,40 +12,28 @@ name: Build
 
 run-name: ${{ github.event.pull_request.title }}
 on:
+  workflow_call:
   pull_request:
     branches:
       - main
 
 jobs:
   build:
-    name: Build
     runs-on: windows-2022
-    env:
-      BOARD_NAME: nano
-      PLATFORM_NAME: avr
-      PLATFORM_VERSION: 1.8.6
+
+    defaults:
+      run:
+        shell: cmd
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Download dependencies
-        shell: cmd
-        run: |
-          set "PATH=%GITHUB_WORKSPACE%\tools\arduino-cli;%PATH%"
-          arduino-cli core install arduino:%PLATFORM_NAME%@%PLATFORM_VERSION% --config-file %GITHUB_WORKSPACE%\config.yml
+      - name: Install Arduino platform
+        run : start_console a
 
-      - name: Install libraries
-        shell: cmd
-        run: |
-          set "PATH=%GITHUB_WORKSPACE%\tools\arduino-cli;%PATH%"
-          for %%f in ("%GITHUB_WORKSPACE%\lib\*.zip") do (
-              arduino-cli lib install --config-file %GITHUB_WORKSPACE%\config.yml --zip-path %%f
-          )
-          
+      - name: Install project libraries
+        run : start_console l
+
       - name: Compile
-        shell: cmd
-        run: |
-          set "PATH=%GITHUB_WORKSPACE%\tools\arduino-cli;%PATH%"
-          arduino-cli compile -v -b arduino:%PLATFORM_NAME%:%BOARD_NAME% %GITHUB_WORKSPACE%\src\robot --config-file %GITHUB_WORKSPACE%\config.yml --output-dir %GITHUB_WORKSPACE%\build
-          arduino-cli compile -v -b arduino:%PLATFORM_NAME%:%BOARD_NAME% %GITHUB_WORKSPACE%\src\controller --config-file %GITHUB_WORKSPACE%\config.yml --output-dir %GITHUB_WORKSPACE%\build
+        run : start_console b
