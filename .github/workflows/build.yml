@@ -18,7 +18,7 @@ on:
       - main
 
 jobs:
-  build:
+  compile:
     runs-on: windows-2022
 
     defaults:
@@ -37,3 +37,4 @@ jobs:
 
       - name: Compile
         run : start_console b
+
