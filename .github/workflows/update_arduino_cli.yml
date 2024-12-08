@@ -20,7 +20,7 @@ on:
 
 jobs:
   update-arduino-cli:
-    name: ${{ github.event.inputs.ARDUINO_CLI_VERSION }}
+    name: Arduino_CLI_${{ github.event.inputs.ARDUINO_CLI_VERSION }}
     runs-on: windows-2022
     
     defaults:
@@ -41,7 +41,7 @@ jobs:
 
       - name: Push changes
         run: |
-          set UPDATE_BRANCH=update/Arduino_CLI_${{ github.event.inputs.RELEASE_VERSION }}
+          set UPDATE_BRANCH=update/Arduino_CLI_${{ github.event.inputs.ARDUINO_CLI_VERSION }}
 
           git config --global user.name "%GITHUB_USER%"
           git config --global user.email "%GITHUB_EMAIL%"
@@ -49,6 +49,6 @@ jobs:
           git diff --exit-code || (
             git checkout -b %UPDATE_BRANCH%
             git add .
-            git commit -m "add new files"
+            git commit -m "add exe file"
             git push https://x-access-token:%GITHUB_TOKEN%@github.com/${{ github.repository }} "%UPDATE_BRANCH%"
           )

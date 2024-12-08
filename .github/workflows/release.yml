@@ -20,7 +20,7 @@ on:
 
 jobs:
   release:
-    name: v${{ github.event.inputs.RELEASE_VERSION }}
+    name: Release_v${{ github.event.inputs.RELEASE_VERSION }}
     runs-on: windows-2022
 
     defaults:
