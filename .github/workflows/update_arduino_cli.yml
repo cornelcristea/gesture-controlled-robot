@@ -20,7 +20,7 @@ on:
 
 jobs:
   update-arduino-cli:
-    name: ${{ github.event.inputs.ARDUINO_CLI_VERSION }}
+    name: Arduino_CLI_${{ github.event.inputs.ARDUINO_CLI_VERSION }}
     runs-on: windows-2022
     
     defaults:
