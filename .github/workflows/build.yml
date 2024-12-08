@@ -20,18 +20,20 @@ on:
 jobs:
   build:
     runs-on: windows-2022
+
+    defaults:
+      run:
+        shell: cmd
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Install Arduino platform
-        shell: cmd
         run : start_console a
 
       - name: Install project libraries
-        shell: cmd
         run : start_console l
 
       - name: Compile
-        shell: cmd
         run : start_console b

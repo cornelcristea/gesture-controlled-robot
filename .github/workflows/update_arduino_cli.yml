@@ -1,0 +1,54 @@
+###################################################
+#                                                 #
+#             Gesture Controlled Robot            #
+#                                                 #
+###################################################
+# author  : Cornel Cristea                        #
+# date    : 07/12/2024                            #
+# version : 1.0.0                                 #
+###################################################
+
+name: Update Arduino CLI
+
+run-name: Update Arduino CLI
+on:
+  workflow_dispatch:
+    inputs:
+      ARDUINO_CLI_VERSION:
+        description: "Set new version for tool (e.g. 1.1.0)"
+        required: true
+
+jobs:
+  update-arduino-cli:
+    name: ${{ github.event.inputs.ARDUINO_CLI_VERSION }}
+    runs-on: windows-2022
+    
+    defaults:
+      run:
+        shell: cmd
+
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_USER: GitHub Actions Bot
+      GITHUB_EMAIL: actions@github.com
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Update Arduino CLI
+        run : update_arduino_cli ${{ github.event.inputs.ARDUINO_CLI_VERSION }}
+
+      - name: Push changes
+        run: |
+          set UPDATE_BRANCH=update/Arduino_CLI_${{ github.event.inputs.RELEASE_VERSION }}
+
+          git config --global user.name "%GITHUB_USER%"
+          git config --global user.email "%GITHUB_EMAIL%"
+
+          git diff --exit-code || (
+            git checkout -b %UPDATE_BRANCH%
+            git add .
+            git commit -m "add new files"
+            git push https://x-access-token:%GITHUB_TOKEN%@github.com/${{ github.repository }} "%UPDATE_BRANCH%"
+          )

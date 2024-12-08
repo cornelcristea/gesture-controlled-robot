@@ -23,32 +23,32 @@ jobs:
     name: v${{ github.event.inputs.RELEASE_VERSION }}
     runs-on: windows-2022
 
+    defaults:
+      run:
+        shell: cmd
+
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_USER: GitHub Actions Bot
+      GITHUB_EMAIL: actions@github.com
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Install Arduino platform
-        shell: cmd
         run : start_console a
 
       - name: Install project libraries
-        shell: cmd
         run : start_console l
 
       - name: Build
-        shell: cmd
         run : start_console b
 
       - name: Create package
-        shell: cmd
         run : start_console r
 
       - name: Push changes
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_USER: GitHub Actions Bot
-          GITHUB_EMAIL: actions@github.com
-        shell: cmd
         run: |
           set RELEASE_BRANCH=release/v${{ github.event.inputs.RELEASE_VERSION }}
 
