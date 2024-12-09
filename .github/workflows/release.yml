@@ -55,11 +55,13 @@ jobs:
           git config --global user.name "%GITHUB_USER%"
           git config --global user.email "%GITHUB_EMAIL%"
 
-          git checkout -b %RELEASE_BRANCH%
-          git add .
-          git commit -m "v${{ github.event.inputs.RELEASE_VERSION }}"
-          git push https://x-access-token:%GITHUB_TOKEN%@github.com/${{ github.repository }} "%RELEASE_BRANCH%"
-
+          git diff --exit-code || (
+            git checkout -b %RELEASE_BRANCH%
+            git add .
+            git commit -m "v${{ github.event.inputs.RELEASE_VERSION }}"
+            git push https://x-access-token:%GITHUB_TOKEN%@github.com/${{ github.repository }} "%RELEASE_BRANCH%"
+          )
+          
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with: 
