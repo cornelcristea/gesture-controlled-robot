@@ -115,10 +115,11 @@ This table provides an overview of the binary files generated during the build p
 For more details on how to configure and use Arduino CLI, refer to the [Arduino CLI documentation](https://arduino.github.io/arduino-cli/latest/).
 
 ## <b>4. Software test</b>
+Create some unit test if it's possible.
 To be done.
 
 ## <b>5. Flashing board</b>
-Use Arduino CLI.<br>
+For the moment, Arduino IDE had to be used for this actions but the goal is to use Arduino CLI.<br>
 To be done.
 
 ## <b>6. Update Arduino CLI</b>
@@ -157,7 +158,7 @@ To be done.
 
 ## <b>9. Release package</b>
 At the moment it's a ZIP archive.<br>
-To be created a package as Docker image and to be uploaded on GitJHub ppackages repository.
+To be created a package as Docker image and to be uploaded on DockerHub or GitHub Packages Repository.
 
 ## <b>10. Demo</b>
 
